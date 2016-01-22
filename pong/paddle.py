@@ -4,7 +4,7 @@ from pygame.locals import *
 
 class Paddle:
 
-    _defaults = {
+    defaults = {
         'OFFSET':   settings.WINDOW['PADDLE_OFFSET']
     ,   'LENGTH':   100
     ,   'WIDTH':    10
@@ -12,18 +12,20 @@ class Paddle:
     ,   'COLOUR':   settings.COLOURS['GREEN']
     }
 
-    _status = {
-        'pos_x': 0
-    ,   'pos_y': 0
-    ,   'direction': settings.DIRECTION['NONE']
-    }
+    def __init__(self, screen, name, override=None):
+        if override is None:
+            self._settings = self.defaults
+        else:
+            self._settings = override
 
-    def __init__(self, screen, override=_defaults):
-        self._settings = override
         self.screen = screen  # copy the reference to the screen in a local variable
+        self.name = name
 
-        self._status['pos_x'] = settings.WINDOW_INNER_BORDERS['X_AXIS']['LEFT'] + settings.WINDOW['PADDLE_OFFSET']//2
-        self._status['pos_y'] = settings.WINDOW['HEIGHT']//2 - (self._settings['LENGTH'] + self._settings['WIDTH'])//2
+        self._status = {
+            'pos_x': settings.WINDOW_INNER_BORDERS['X_AXIS']['LEFT'] + self._settings['OFFSET']
+        ,   'pos_y': settings.WINDOW['HEIGHT']//2 - (self._settings['LENGTH'] + self._settings['WIDTH'])//2
+        ,   'direction': settings.DIRECTION['NONE']
+        }
 
     def get_info(self):
         return {

@@ -4,22 +4,22 @@ import math
 
 class Ball():
 
-    _defaults = {
+    defaults = {
         'RADIUS':   7
     ,   'SPEED':    5
     ,   'COLOUR':   settings.COLOURS['BLUE']
     }
 
-    _status = {
-        'pos_x':        settings.WINDOW['WIDTH']//2
-    ,   'pos_y':        settings.WINDOW['HEIGHT']//2
-    ,   'direction_x':  1
-    ,   'direction_y':  0.8
-    }
-
-    def __init__(self, screen, settings = _defaults):
-        self._settings = settings
+    def __init__(self, screen, override = defaults):
+        self._settings = override
         self.screen = screen  # copy the reference to the screen in a local variable
+
+        self._status = {
+            'pos_x':        settings.WINDOW['WIDTH']//2
+        ,   'pos_y':        settings.WINDOW['HEIGHT']//2
+        ,   'direction_x':  1
+        ,   'direction_y':  0.8
+        }
 
     def get_info(self):
         return {
@@ -38,23 +38,20 @@ class Ball():
         if (self._status['pos_y'] <= settings.WINDOW_INNER_BORDERS['Y_AXIS']['TOP'] + self._settings['RADIUS']) or (self._status['pos_y'] >= settings.WINDOW_INNER_BORDERS['Y_AXIS']['BOTTOM'] - self._settings['RADIUS']):
             self._status['direction_y'] *= -1
 
-    def bounce_paddle(self, paddle):
-
+    def collided(self, paddle):
         paddle_info = paddle.get_info()  # get the position and direction info for the paddle object
 
-        if self._status['pos_x'] <= paddle_info['x_axis']['right'] + self._settings['RADIUS']:
-            if (self._status['pos_y'] >= paddle_info['y_axis']['top'] + self._settings['RADIUS']) and (self._status['pos_y'] <= paddle_info['y_axis']['bottom'] - self._settings['RADIUS']):
-                # the ball should bounce
-                self._status['direction_x'] *= -1
-                # Depending on the direction of the paddle, the angle will be different
-                if(paddle_info['direction'] == settings.DIRECTION['UP'] and self._status['direction_y'] < 0) \
-                    or \
-                    (paddle_info['direction'] == settings.DIRECTION['DOWN'] and self._status['direction_y'] > 0):
-                    # Both going in the same direction, increase the angle
-                    self._rotate(settings.DIRECTION['ANGLE_CHANGE_THETA'])
-                elif paddle_info['direction'] != settings.DIRECTION['NONE']:
-                    # The paddle is moving but the ball is moving in the opposite direction, decrease the angle
-                    self._rotate((2*math.pi) - settings.DIRECTION['ANGLE_CHANGE_THETA'])
+        if( self._status['pos_x'] < paddle_info['x_axis']['right'] and
+            self._status['pos_x'] > paddle_info['x_axis']['left'] and
+            self._status['pos_y'] > paddle_info['y_axis']['top'] and
+            self._status['pos_y'] < paddle_info['y_axis']['bottom']):
+            return True
+        else:
+            return False
+
+    def bounce_paddle(self, paddle):
+        if self.collided(paddle):
+            self._status['direction_x'] *= -1
 
     def move(self):
         self._status['pos_x'] += self._status['direction_x'] * self._settings['SPEED']

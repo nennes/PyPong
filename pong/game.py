@@ -1,4 +1,6 @@
+from copy import copy
 from pong import board, ball, paddle
+import settings
 
 
 class Game:
@@ -10,17 +12,23 @@ class Game:
 
         self.board = board.Board(screen)
         self.ball = ball.Ball(screen)
-        self.paddles = {
-            'user': paddle.Paddle(screen)
-        }
+
+        cpu_paddle_settings = copy(paddle.Paddle.defaults)  # a shallow copy is sufficient
+        cpu_paddle_settings['OFFSET'] = settings.WINDOW['WIDTH'] - 3*(settings.WINDOW['PADDLE_OFFSET'] + settings.WINDOW['LINE_THICKNESS'])
+        self.paddles = [
+            paddle.Paddle(screen, 'user')
+        ,   paddle.Paddle(screen, 'cpu', override=cpu_paddle_settings)
+        ]
 
     def update(self):
 
         # Handle collisions
         self.ball.bounce_wall()
-        self.ball.bounce_paddle(self.paddles['user'])
+        for p in self.paddles:
+            self.ball.bounce_paddle(p)
 
         # draw objects
         self.board.draw(self.screen)
         self.ball.draw(self.screen)
-        self.paddles['user'].draw(self.screen)
+        for p in self.paddles:
+            p.draw(self.screen)

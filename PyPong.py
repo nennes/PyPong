@@ -30,7 +30,8 @@ def main():
                     paddle_direction = settings.DIRECTION['NONE']
 
         pong.ball.move()
-        pong.paddles['user'].move(paddle_direction)
+        pong.paddles[0].move(paddle_direction)
+        pong.paddles[1].move_auto(pong.ball)
         pong.update()
         pygame.display.update()
         clock.tick(settings.WINDOW['FPS'])

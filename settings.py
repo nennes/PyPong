@@ -1,5 +1,6 @@
 import math
 
+
 # CONSTANTS
 WINDOW = {
     'WIDTH':  600
