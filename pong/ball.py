@@ -1,8 +1,11 @@
 import settings
 import pygame
 import math
+import utilities
 
 class Ball():
+    C_VERTICAL = 'VERTICAL'
+    C_HORIZONTAL = 'HORIZONTAL'
 
     defaults = {
         'RADIUS':   7
@@ -17,7 +20,7 @@ class Ball():
         self._status = {
             'pos_x':        settings.WINDOW['WIDTH']//2
         ,   'pos_y':        settings.WINDOW['HEIGHT']//2
-        ,   'direction_x':  1
+        ,   'direction_x':  1.0
         ,   'direction_y':  0.8
         }
 
@@ -38,17 +41,42 @@ class Ball():
         if (self._status['pos_y'] <= settings.WINDOW_INNER_BORDERS['Y_AXIS']['TOP'] + self._settings['RADIUS']) or (self._status['pos_y'] >= settings.WINDOW_INNER_BORDERS['Y_AXIS']['BOTTOM'] - self._settings['RADIUS']):
             self._status['direction_y'] *= -1
 
-    def collided(self, paddle):
+    def _last_pos(self):
+        return [
+            self._status['pos_x'] - self._status['direction_x'] * self._settings['SPEED']
+        ,   self._status['pos_y'] - self._status['direction_y'] * self._settings['SPEED']
+        ]
+
+    def collision_side(self, paddle):
         paddle_info = paddle.get_info()  # get the position and direction info for the paddle object
 
-        return True if( self._status['pos_x'] < paddle_info['x_axis']['right'] and
-            self._status['pos_x'] > paddle_info['x_axis']['left'] and
-            self._status['pos_y'] > paddle_info['y_axis']['top'] and
-            self._status['pos_y'] < paddle_info['y_axis']['bottom']) else False
+        if( self._status['pos_x'] + self._settings['RADIUS'] < paddle_info['x_axis']['right']  and
+            self._status['pos_x'] - self._settings['RADIUS'] > paddle_info['x_axis']['left']   and
+            self._status['pos_y'] + self._settings['RADIUS'] > paddle_info['y_axis']['top']    and
+            self._status['pos_y'] - self._settings['RADIUS'] < paddle_info['y_axis']['bottom']):
+            # The ball has collided with the paddle. Determine on which side
+            ball_line = utilities.line(self._last_pos(), [self._status['pos_x'], self._status['pos_y']])
+            paddle_line_h1 = utilities.line([paddle_info['x_axis']['left'], paddle_info['y_axis']['top']], [paddle_info['x_axis']['right'], paddle_info['y_axis']['top']])
+            paddle_line_h2 = utilities.line([paddle_info['x_axis']['left'], paddle_info['y_axis']['bottom']], [paddle_info['x_axis']['right'], paddle_info['y_axis']['bottom']])
+
+            paddle_line_v1 = utilities.line([paddle_info['x_axis']['left'], paddle_info['y_axis']['top']], [paddle_info['x_axis']['left'], paddle_info['y_axis']['bottom']])
+            paddle_line_v2 = utilities.line([paddle_info['x_axis']['right'], paddle_info['y_axis']['top']], [paddle_info['x_axis']['right'], paddle_info['y_axis']['bottom']])
+
+            if utilities.intersection(ball_line, paddle_line_h1) or utilities.intersection(ball_line, paddle_line_h2):
+                return self.C_HORIZONTAL
+            elif utilities.intersection(ball_line, paddle_line_v1) or utilities.intersection(ball_line, paddle_line_v2):
+                return self.C_VERTICAL
+            else:
+                print(self._status['pos_x'], self._status['pos_y'], paddle_info['x_axis']['left'], paddle_info['x_axis']['right'], paddle_info['y_axis']['top'], paddle_info['y_axis']['bottom'])
+        else:
+            return None
 
     def bounce_paddle(self, paddle):
-        if self.collided(paddle):
+        collision_side = self.collision_side(paddle)
+        if collision_side == self.C_VERTICAL:
             self._status['direction_x'] *= -1
+        elif collision_side == self.C_HORIZONTAL:
+            self._status['direction_y'] *= -1
 
     def move(self):
         self._status['pos_x'] += self._status['direction_x'] * self._settings['SPEED']

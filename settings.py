@@ -32,8 +32,10 @@ WINDOW_INNER_BORDERS = {
     }
 }
 DIRECTION={
-    'UP':   -1
-,   'DOWN': 1
-,   'NONE': 0
+    'UP':       -1
+,   'DOWN':     1
+,   'LEFT':     -1
+,   'RIGHT':    1
+,   'NONE':     0
 ,   'ANGLE_CHANGE_THETA': math.pi / 12  # 15 degrees
 }

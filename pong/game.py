@@ -14,7 +14,8 @@ class Game:
         self.ball = ball.Ball(screen)
 
         cpu_paddle_settings = copy(paddle.Paddle.defaults)  # a shallow copy is sufficient
-        cpu_paddle_settings['OFFSET'] = settings.WINDOW['WIDTH'] - 3*(settings.WINDOW['PADDLE_OFFSET'] + settings.WINDOW['LINE_THICKNESS'])
+        cpu_paddle_settings['OFFSET'] = settings.WINDOW['WIDTH'] - 3*(settings.WINDOW['PADDLE_OFFSET'] + settings.WINDOW['LINE_THICKNESS']) - 200
+        cpu_paddle_settings['ORIENTATION'] = 'HORIZONTAL'
         self.paddles = [
             paddle.Paddle(screen, 'user')
         ,   paddle.Paddle(screen, 'cpu', override=cpu_paddle_settings)
