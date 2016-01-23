@@ -1,5 +1,5 @@
 from copy import copy
-from pong import board, ball, paddle
+from pong import board, ball, horizontalpaddle, verticalpaddle
 import settings
 
 
@@ -13,12 +13,11 @@ class Game:
         self.board = board.Board(screen)
         self.ball = ball.Ball(screen)
 
-        cpu_paddle_settings = copy(paddle.Paddle.defaults)  # a shallow copy is sufficient
+        cpu_paddle_settings = copy(horizontalpaddle.HorizontalPaddle.defaults)  # a shallow copy is sufficient
         cpu_paddle_settings['OFFSET'] = settings.WINDOW['WIDTH'] - 3*(settings.WINDOW['PADDLE_OFFSET'] + settings.WINDOW['LINE_THICKNESS']) - 200
-        cpu_paddle_settings['ORIENTATION'] = 'HORIZONTAL'
         self.paddles = [
-            paddle.Paddle(screen, 'user')
-        ,   paddle.Paddle(screen, 'cpu', override=cpu_paddle_settings)
+            verticalpaddle.VerticalPaddle(screen, 'user')
+        ,   horizontalpaddle.HorizontalPaddle(screen, 'cpu', override=cpu_paddle_settings)
         ]
 
     def update(self):
