@@ -14,20 +14,22 @@ def main():
 
     pong = game.Game(screen=pygame.display.set_mode((settings.WINDOW['WIDTH'], settings.WINDOW['HEIGHT']), 0, 32))
 
+    try:
+        jstick = pygame.joystick. Joystick(1) # create a joystick instance
+        jstick.init() # init instance
+    except pygame.error:
+        print('No Joystick Present')
+
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
-            if event.type == KEYDOWN:
-                if event.key == K_UP:
-                    paddle_direction = settings.DIRECTION['UP']
-                elif event.key == K_DOWN:
-                    paddle_direction = settings.DIRECTION['DOWN']
-            elif event.type == KEYUP:
-                if event.key == K_UP:
-                    paddle_direction = settings.DIRECTION['NONE']
-                elif event.key == K_DOWN:
-                    paddle_direction = settings.DIRECTION['NONE']
+            if event.type == pygame.JOYHATMOTION:
+                # jstick.get_hat(0) provides a list of the hat buttons state
+                # jstick.get_hat(0)[1] is the vertical axis:
+                #  1 us UP, -1 is DOWN
+                #  This is the opposite of the direction format we use
+                paddle_direction = -jstick.get_hat(0)[1]
 
         pong.ball.move()
         pong.paddles[0].move(paddle_direction)

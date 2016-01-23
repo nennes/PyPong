@@ -6,7 +6,7 @@ class Ball():
 
     defaults = {
         'RADIUS':   7
-    ,   'SPEED':    5
+    ,   'SPEED':    8
     ,   'COLOUR':   settings.COLOURS['BLUE']
     }
 
@@ -41,13 +41,10 @@ class Ball():
     def collided(self, paddle):
         paddle_info = paddle.get_info()  # get the position and direction info for the paddle object
 
-        if( self._status['pos_x'] < paddle_info['x_axis']['right'] and
+        return True if( self._status['pos_x'] < paddle_info['x_axis']['right'] and
             self._status['pos_x'] > paddle_info['x_axis']['left'] and
             self._status['pos_y'] > paddle_info['y_axis']['top'] and
-            self._status['pos_y'] < paddle_info['y_axis']['bottom']):
-            return True
-        else:
-            return False
+            self._status['pos_y'] < paddle_info['y_axis']['bottom']) else False
 
     def bounce_paddle(self, paddle):
         if self.collided(paddle):

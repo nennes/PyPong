@@ -8,7 +8,7 @@ class Paddle:
         'OFFSET':   settings.WINDOW['PADDLE_OFFSET']
     ,   'LENGTH':   100
     ,   'WIDTH':    10
-    ,   'SPEED':    5
+    ,   'SPEED':    6
     ,   'COLOUR':   settings.COLOURS['GREEN']
     }
 
