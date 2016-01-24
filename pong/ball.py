@@ -9,7 +9,7 @@ class Ball():
 
     defaults = {
         'RADIUS':   7
-    ,   'SPEED':    8
+    ,   'SPEED':    7
     ,   'COLOUR':   settings.COLOURS['BLUE']
     }
 

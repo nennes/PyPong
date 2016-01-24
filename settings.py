@@ -37,5 +37,4 @@ DIRECTION={
 ,   'LEFT':     -1
 ,   'RIGHT':    1
 ,   'NONE':     0
-,   'ANGLE_CHANGE_THETA': math.pi / 12  # 15 degrees
 }

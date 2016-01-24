@@ -13,11 +13,22 @@ class Game:
         self.board = board.Board(screen)
         self.ball = ball.Ball(screen)
 
-        cpu_paddle_settings = copy(horizontalpaddle.HorizontalPaddle.defaults)  # a shallow copy is sufficient
-        cpu_paddle_settings['OFFSET'] = settings.WINDOW['WIDTH'] - 3*(settings.WINDOW['PADDLE_OFFSET'] + settings.WINDOW['LINE_THICKNESS']) - 200
+        user_horizontal_settings = copy(horizontalpaddle.HorizontalPaddle.defaults)  # a shallow copy is sufficient
+        user_horizontal_settings['POSITION'] = 'BOTTOM'
+
+        cpu_horizontal_settings = copy(horizontalpaddle.HorizontalPaddle.defaults)  # a shallow copy is sufficient
+        cpu_horizontal_settings['POSITION'] = 'TOP'
+        cpu_horizontal_settings['COLOUR'] = settings.COLOURS['RED']
+
+        cpu_vertical_settings = copy(verticalpaddle.VerticalPaddle.defaults)  # a shallow copy is sufficient
+        cpu_vertical_settings['POSITION'] = 'RIGHT'
+        cpu_vertical_settings['COLOUR'] = settings.COLOURS['RED']
+
         self.paddles = [
-            verticalpaddle.VerticalPaddle(screen, 'user')
-        ,   horizontalpaddle.HorizontalPaddle(screen, 'cpu', override=cpu_paddle_settings)
+            verticalpaddle.VerticalPaddle(screen, 'user_vertical')
+        ,   horizontalpaddle.HorizontalPaddle(screen, 'user_horizontal', override=user_horizontal_settings)
+        ,   verticalpaddle.VerticalPaddle(screen, 'cpu_vertical', override=cpu_vertical_settings)
+        ,   horizontalpaddle.HorizontalPaddle(screen, 'cpu_horizontal', override=cpu_horizontal_settings)
         ]
 
     def update(self):

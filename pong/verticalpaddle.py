@@ -3,16 +3,26 @@ import settings
 import pygame
 from pygame.locals import *
 
+
 class VerticalPaddle(paddle.Paddle):
 
     defaults = {
         'OFFSET':       settings.WINDOW['PADDLE_OFFSET']
     ,   'ORIENTATION':  'VERTICAL'
+    ,   'POSITION':     'LEFT'
     ,   'HEIGHT':       100
     ,   'WIDTH':        10
-    ,   'SPEED':        6
+    ,   'SPEED':        7
     ,   'COLOUR':       settings.COLOURS['GREEN']
     }
+
+    def __init__(self, screen, name, override=None):
+        super().__init__(screen, name, override)
+        self._status = {
+            'pos_x':        settings.WINDOW['WIDTH']- self._settings['OFFSET'] - self._settings['WIDTH'] if self._settings['POSITION'] == 'RIGHT' else self._settings['OFFSET']
+        ,   'pos_y':        settings.WINDOW['HEIGHT']//2 + self._settings['HEIGHT']//2
+        ,   'direction':    settings.DIRECTION['NONE']
+        }
 
     def draw(self, screen):
         paddle = pygame.Surface((self._settings['WIDTH'],self._settings['HEIGHT']), pygame.SRCALPHA, 32)
@@ -23,7 +33,7 @@ class VerticalPaddle(paddle.Paddle):
 
     def move(self, direction=None):
         if direction is not None:
-            self._status['direction'] = direction
+            self._status['direction'] = direction[1]
 
         self._status['pos_y'] += self._status['direction'] * self._settings['SPEED']
         if self._status['pos_y'] <= settings.WINDOW_INNER_BORDERS['Y_AXIS']['TOP']:

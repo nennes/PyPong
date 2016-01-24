@@ -15,12 +15,6 @@ class Paddle:
         self.screen = screen  # copy the reference to the screen in a local variable
         self.name = name
 
-        self._status = {
-            'pos_x':        settings.WINDOW_INNER_BORDERS['X_AXIS']['LEFT'] + self._settings['OFFSET']
-        ,   'pos_y':        settings.WINDOW['HEIGHT']//2 - (self._settings['HEIGHT'] + self._settings['WIDTH'])//2
-        ,   'direction':    settings.DIRECTION['NONE']
-        }
-
     def get_info(self):
         return {
             'x_axis': {
