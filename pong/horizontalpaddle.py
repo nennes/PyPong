@@ -45,7 +45,7 @@ class HorizontalPaddle(paddle.Paddle):
     def move_auto(self, ball):
         ball_info = ball.get_info()
 
-        if ball_info['pos_x'] > self._status['pos_x'] - self._settings['WIDTH']//4:
+        if ball_info['pos_x'] > self._status['pos_x'] + (3*self._settings['WIDTH'])//4:
             self._status['direction'] = settings.DIRECTION['RIGHT']
         elif ball_info['pos_x'] < self._status['pos_x'] + self._settings['WIDTH']//4:
             self._status['direction'] = settings.DIRECTION['LEFT']

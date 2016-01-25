@@ -25,7 +25,7 @@ class Board:
             )
         ,   settings.WINDOW['LINE_THICKNESS']
         )
-        pygame.draw.aaline(background, settings.COLOURS['WHITE'], ((settings.WINDOW['WIDTH'] - settings.WINDOW['PADDLE_OFFSET']//2)/2, settings.WINDOW['PADDLE_OFFSET']//2), ((settings.WINDOW['WIDTH'] - settings.WINDOW['PADDLE_OFFSET']//2)/2, (settings.WINDOW['HEIGHT'] - settings.WINDOW['PADDLE_OFFSET']//2)))
+        pygame.draw.aaline(background, settings.COLOURS['WHITE'], (settings.WINDOW['PADDLE_OFFSET']//2, settings.WINDOW['PADDLE_OFFSET']//2), ((settings.WINDOW['WIDTH'] - settings.WINDOW['PADDLE_OFFSET']//2), (settings.WINDOW['HEIGHT'] - settings.WINDOW['PADDLE_OFFSET']//2)))
         screen.blit(background, (0, 0))
 
 
