@@ -31,11 +31,13 @@ class VerticalPaddle(paddle.Paddle):
         pygame.draw.circle(paddle, self._settings['COLOUR'], (self._settings['WIDTH']//2, self._settings['HEIGHT'] - self._settings['WIDTH']//2), self._settings['WIDTH']//2, 0)
         screen.blit(paddle, (self._status['pos_x'], self._status['pos_y']))
 
-    def move(self, direction=None):
+    def move(self, direction=None, ball_info=None):
         if direction is not None:
             self._status['direction'] = direction[1]
 
         self._status['pos_y'] += self._status['direction'] * self._settings['SPEED']
+
+        # Handle reaching the edges
         if self._status['pos_y'] <= settings.WINDOW_INNER_BORDERS['Y_AXIS']['TOP']:
             self._status['pos_y'] = settings.WINDOW_INNER_BORDERS['Y_AXIS']['TOP'] + 1
         elif self._status['pos_y'] >= settings.WINDOW_INNER_BORDERS['Y_AXIS']['BOTTOM'] - self._settings['HEIGHT']:
@@ -51,4 +53,4 @@ class VerticalPaddle(paddle.Paddle):
         else:
             self._status['direction'] = settings.DIRECTION['NONE']
 
-        self.move()
+        self.move(ball_info=ball_info)

@@ -12,7 +12,7 @@ def main():
     pygame.display.set_caption(settings.WINDOW['TITLE'])
     paddle_direction = [settings.DIRECTION['NONE'], settings.DIRECTION['NONE']]  # horizontal and vertical directions
 
-    pong = game.Game(screen=pygame.display.set_mode((settings.WINDOW['WIDTH'], settings.WINDOW['HEIGHT']), 0, 32))
+    pong = game.Game()
 
     try:
         jstick = pygame.joystick. Joystick(1) # create a joystick instance
@@ -46,12 +46,7 @@ def main():
                 elif event.key == K_RIGHT:
                     paddle_direction[0] = settings.DIRECTION['NONE']
 
-        pong.ball.move()
-        pong.paddles[0].move(paddle_direction)
-        pong.paddles[1].move(paddle_direction)
-        pong.paddles[2].move_auto(pong.ball)
-        pong.paddles[3].move_auto(pong.ball)
-        pong.update()
+        pong.update(paddle_direction)
         pygame.display.update()
         clock.tick(settings.WINDOW['FPS'])
 
