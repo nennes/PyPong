@@ -1,6 +1,6 @@
 import pygame
 from copy import copy
-from pong import board, ball, horizontalpaddle, verticalpaddle
+from pong import board, info, ball, horizontalpaddle, verticalpaddle
 import settings
 
 
@@ -8,10 +8,11 @@ class Game:
 
     def __init__(self, speed=5):
         self.speed = speed
-        self.screen = pygame.display.set_mode((settings.WINDOW['WIDTH'], settings.WINDOW['HEIGHT']), 0, 32)
+        self.screen = pygame.display.set_mode((settings.WINDOW['WIDTH'], settings.WINDOW['HEIGHT'] + settings.WINDOW['INFO_HEIGHT']), 0, 32)
         self.score = 0
 
         self.board = board.Board(self.screen)
+        self.info = info.Info(self.screen)
         self.ball = ball.Ball(self.screen)
 
         user_horizontal_settings = copy(horizontalpaddle.HorizontalPaddle.defaults)  # a shallow copy is sufficient
@@ -38,13 +39,13 @@ class Game:
         self.ball.move()
         self.paddles[0].move(direction)
         self.paddles[1].move(direction)
-        self.paddles[2].move_auto(self.ball)
-        self.paddles[3].move_auto(self.ball)
+        self.paddles[2].move_auto(self.ball) #move(direction)
+        self.paddles[3].move_auto(self.ball) #move_auto(self.ball)
 
         # Handle collisions
-        self.ball.bounce_wall()
+        self.board.settings['line_colour'] = settings.COLOURS['RED'] if self.ball.bounce_wall() else settings.COLOURS['WHITE']
         for p in self.paddles:
-            self.ball.bounce_paddle(p)
+            p.bounce(self.ball)
 
         # draw objects
         self.board.draw(self.screen)

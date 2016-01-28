@@ -52,5 +52,22 @@ class VerticalPaddle(paddle.Paddle):
             self._status['direction'] = settings.DIRECTION['UP']
         else:
             self._status['direction'] = settings.DIRECTION['NONE']
-
         self.move(ball_info=ball_info)
+
+    def bounce(self, ball) -> None:
+        if self.collided_with(ball):
+
+            if self.bounce_direction(ball) == settings.C_HORIZONTAL:
+                ball._status['direction_y'] *= -1
+            else:
+                ball._status['direction_x'] *= -1
+
+    def bounce_direction(self, ball) -> str:
+        ball_info   = ball.get_info()
+        paddle_info = self.get_info()
+
+        if( ball_info['pos_y'] - ball_info['RADIUS'] < paddle_info['y_axis']['top'] or
+            ball_info['pos_y'] + ball_info['RADIUS'] > paddle_info['y_axis']['bottom']):
+            return settings.C_HORIZONTAL
+        else:
+            return settings.C_VERTICAL

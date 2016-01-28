@@ -7,6 +7,7 @@ from pong import game
 
 
 def main():
+    pygame.mixer.pre_init(44100, 16, 2, 4096) #frequency, size, channels, buffersize
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption(settings.WINDOW['TITLE'])

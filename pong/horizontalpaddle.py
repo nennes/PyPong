@@ -43,7 +43,7 @@ class HorizontalPaddle(paddle.Paddle):
             self._status['pos_x'] = settings.WINDOW_INNER_BORDERS['X_AXIS']['LEFT'] + 1
 
     def move_auto(self, ball):
-        ball_info = ball.get_info()
+        ball_info   = ball.get_info()
 
         if ball_info['pos_x'] > self._status['pos_x'] + (3*self._settings['WIDTH'])//4:
             self._status['direction'] = settings.DIRECTION['RIGHT']
@@ -51,5 +51,24 @@ class HorizontalPaddle(paddle.Paddle):
             self._status['direction'] = settings.DIRECTION['LEFT']
         else:
             self._status['direction'] = settings.DIRECTION['NONE']
-
         self.move()
+
+    def bounce(self, ball) -> None:
+        if self.collided_with(ball):
+            if self.bounce_direction(ball) == settings.C_HORIZONTAL:
+                ball._status['direction_x'] *= -1
+            else:
+                ball._status['direction_y'] *= -1
+
+    def bounce_direction(self, ball) -> str:
+        ball_info   = ball.get_info()
+        paddle_info = self.get_info()
+
+        if( ball_info['pos_x'] - ball_info['RADIUS'] < paddle_info['x_axis']['left'] or
+            ball_info['pos_x'] + ball_info['RADIUS'] > paddle_info['x_axis']['right']):
+            return settings.C_HORIZONTAL
+        else:
+            return settings.C_VERTICAL
+
+
+

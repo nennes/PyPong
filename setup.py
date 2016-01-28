@@ -1,11 +1,10 @@
-import cx_Freeze
+from distutils.core import setup
+import py2exe, sys, os
 
-executables = [cx_Freeze.Executable("PyPong.py")]
+sys.argv.append('py2exe')
 
-cx_Freeze.setup(
-    name="Pong Madness",
-    options={"build_exe": {"packages":["pygame"],
-                           "include_files":[]}},
-    executables = executables
-
-    )
+setup(
+    options = {'py2exe': {'bundle_files': 1, 'compressed': True}},
+    windows = [{'script': "PyPong.py"}],
+    zipfile = None, requires=['typing']
+)

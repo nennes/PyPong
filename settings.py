@@ -5,6 +5,7 @@ import math
 WINDOW = {
     'WIDTH':  600
 ,   'HEIGHT': 600
+,   'INFO_HEIGHT': 150
 ,   'FPS': 60
 ,   'TITLE':  "PyPong"
 ,   'LINE_THICKNESS': 3
@@ -38,3 +39,5 @@ DIRECTION={
 ,   'RIGHT':    1
 ,   'NONE':     0
 }
+C_VERTICAL      = 'VERTICAL'
+C_HORIZONTAL    = 'HORIZONTAL'
