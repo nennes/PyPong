@@ -9,7 +9,6 @@ class Game:
     def __init__(self, speed=5):
         self.speed = speed
         self.screen = pygame.display.set_mode((settings.WINDOW['WIDTH'], settings.WINDOW['HEIGHT'] + settings.WINDOW['INFO_HEIGHT']), 0, 32)
-        self.score = 0
 
         self.board = board.Board(self.screen)
         self.info = info.Info(self.screen)
@@ -43,12 +42,18 @@ class Game:
         self.paddles[3].move_auto(self.ball) #move_auto(self.ball)
 
         # Handle collisions
-        self.board.settings['line_colour'] = settings.COLOURS['RED'] if self.ball.bounce_wall() else settings.COLOURS['WHITE']
+        if self.ball.bounce_wall():
+            self.board.settings['line_colour'] = settings.COLOURS['RED']
+            info.Info.reset_score()
+        else:
+            self.board.settings['line_colour'] = settings.COLOURS['WHITE']
+
         for p in self.paddles:
             p.bounce(self.ball)
 
         # draw objects
         self.board.draw(self.screen)
+        self.info.draw(self.screen)
         self.ball.draw(self.screen)
         for p in self.paddles:
             p.draw(self.screen)
