@@ -2,7 +2,6 @@ from copy import copy
 from abc import ABCMeta, abstractmethod
 import pygame
 import os
-
 from info import Info
 
 
@@ -66,7 +65,6 @@ class Paddle:
             paddle_info['y_axis']['top']    - ball_info['RADIUS'] < ball_info['pos_y']):
             pygame.mixer.music.load(self._sounds['BOUNCE'])
             pygame.mixer.music.play()
-            Info.increase_score()
             return True
         else:
             return False
