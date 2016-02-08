@@ -24,7 +24,6 @@ class HorizontalPaddle(paddle.Paddle):
         ,   'direction':    settings.DIRECTION['NONE']
         }
 
-
     def draw(self, screen):
         paddle = pygame.Surface((self._settings['WIDTH'],self._settings['HEIGHT']), pygame.SRCALPHA, 32)
         pygame.draw.circle(paddle, self._settings['COLOUR'], (self._settings['HEIGHT']//2, self._settings['HEIGHT']//2), self._settings['HEIGHT']//2, 0)

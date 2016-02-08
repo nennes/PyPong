@@ -6,6 +6,10 @@ from pygame.locals import *
 class Info:
 
     def __init__(self, screen):
+        """
+
+        :rtype: object
+        """
         self.screen = screen    # copy the reference to the screen in a local variable
 
     @staticmethod

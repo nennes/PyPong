@@ -1,3 +1,5 @@
+import os
+
 import pygame
 from copy import copy
 from pong import board, info, ball, horizontalpaddle, verticalpaddle
@@ -5,6 +7,10 @@ import settings
 
 
 class Game:
+
+    _sounds = {
+         'BOUNCE':   os.path.join("sounds", "bounce.wav")
+    }
 
     def increase_score(self):
         self._score += 1
@@ -56,13 +62,15 @@ class Game:
         if self.ball.bounce_wall():
             self.board.settings['line_colour'] = settings.COLOURS['RED']
             self.reset_score()
+            self.ball.reset_status()
         else:
             self.board.settings['line_colour'] = settings.COLOURS['WHITE']
 
         for p in self.paddles:
             if p.bounce(self.ball):
                 self.increase_score()
-                # print(self._score)
+                pygame.mixer.music.load(self._sounds['BOUNCE'])
+                pygame.mixer.music.play()
 
         # draw objects
         self.board.draw(self.screen)

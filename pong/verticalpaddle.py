@@ -17,6 +17,10 @@ class VerticalPaddle(paddle.Paddle):
     }
 
     def __init__(self, screen, name, override=None):
+        """
+
+        :rtype: object
+        """
         super().__init__(screen, name, override)
         self._status = {
             'pos_x':        settings.WINDOW['WIDTH']- self._settings['OFFSET'] - self._settings['WIDTH'] if self._settings['POSITION'] == 'RIGHT' else self._settings['OFFSET']

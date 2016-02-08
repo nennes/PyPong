@@ -11,16 +11,16 @@ class Ball:
     ,   'COLOUR':   settings.COLOURS['BLUE']
     }
 
+    _status = {}
+
     def __init__(self, screen, override = defaults):
+        """
+
+        :rtype: object
+        """
         self._settings = override
         self.screen = screen  # copy the reference to the screen in a local variable
-
-        self._status = {
-            'pos_x':        settings.WINDOW['WIDTH']//2
-        ,   'pos_y':        settings.WINDOW['HEIGHT']//2
-        ,   'direction_x':  1.0
-        ,   'direction_y':  0.8
-        }
+        self.reset_status()
 
     def get_info(self) -> Dict[str, int]:
         return {
@@ -44,5 +44,12 @@ class Ball:
         return False
 
     def move(self) -> None:
+
         self._status['pos_x'] += self._status['direction_x'] * self._settings['SPEED']
         self._status['pos_y'] += self._status['direction_y'] * self._settings['SPEED']
+
+    def reset_status(self):
+        self._status['pos_x'] = settings.WINDOW['WIDTH']//2
+        self._status['pos_y'] = settings.WINDOW['HEIGHT']//2
+        self._status['direction_x'] = 1.0
+        self._status['direction_y'] = 0.8
